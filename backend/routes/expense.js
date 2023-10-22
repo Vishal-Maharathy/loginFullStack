@@ -33,7 +33,7 @@ router.get('/getExpenses', async(req, res)=>{
 router.get('/getExpCategory', async(req, res)=>{
     try{
         let userId = req.query.userId
-        let categories = await expenseCategoryModel.findOne5({userId:userId}, {category:1, _id:0})
+        let categories = await expenseCategoryModel.findOne({userId:userId}, {category:1, _id:0})
         return res.status(200).json({success:true, message:"Categories fetched successfully!", categories:categories.category})
     }catch(err){
         console.log(err)

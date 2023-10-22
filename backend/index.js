@@ -23,7 +23,7 @@ try{
     app.use('/registration', userLoginRouter)
     
     //using below middleware to make all the requests go though authentication
-    // app.use(authenticateToken)
+    app.use(authenticateToken)
     app.use('/users', userRouter)
     app.use('/expense', expenseRouter)
 
