@@ -16,6 +16,7 @@ const authenticateToken = async function (req, res, next) {
         if (err) {
             return res.status(403).json({ success: false, message: "Forbidden", error: err.message })
         }
+        console.log(user)
         req.user = user;
         next();
     });

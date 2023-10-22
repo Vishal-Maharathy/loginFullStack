@@ -7,6 +7,7 @@ try{
     //routeDirectives
     const userRouter = require('./routes/users')
     const userLoginRouter = require('./routes/login').router
+    const expenseRouter = require('./routes/expense')
 
     //appMain
     app.use(express.json())
@@ -22,8 +23,9 @@ try{
     app.use('/registration', userLoginRouter)
     
     //using below middleware to make all the requests go though authentication
-    app.use(authenticateToken)
+    // app.use(authenticateToken)
     app.use('/users', userRouter)
+    app.use('/expense', expenseRouter)
 
 }catch(err){
     console.log({success:false, error:err})

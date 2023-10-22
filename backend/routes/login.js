@@ -15,7 +15,7 @@ router.post('/login', async (req, res) => {
         if (!validPassword) {
             return res.status(400).json({ success: false, message: "Invalid password" })
         }
-        const token = generateToken({ email: userData.email, username: userData.username });
+        const token = generateToken({ email: userData.email, userId: userData.userId });
         req.header['authorization'] = token;
         return res.status(200).json({ success: true, message: "User logged in successfully!" })
     } catch (err) {
@@ -32,7 +32,7 @@ router.post('/signup', async (req, res) => {
         }
         const hashedPassword = await bcrypt.hash(body.password, 10);
         const newUser = new user({
-            username: body.username,
+            userId: body.userId,
             email: body.email,
             password: hashedPassword
         });
