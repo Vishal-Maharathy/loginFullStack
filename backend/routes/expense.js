@@ -9,7 +9,7 @@ router.post('/postExpense', async(req, res)=>{
             desc:body.desc,
             amount:body.amount,
             date:new Date().valueOf(),
-            userId:body.userId,
+            userId:req.userId,
             category:body.category,
             note:body.note
         })
@@ -22,7 +22,7 @@ router.post('/postExpense', async(req, res)=>{
 })
 router.get('/getExpenses', async(req, res)=>{
     try{
-        let userId = req.query.userId
+        let userId = req.userId
         let expenses = await expenseModel.find({userId:userId})
         return res.status(200).json({success:true, message:"Expense fetched successfully!", expenses:expenses})
     }catch(err){
@@ -32,7 +32,7 @@ router.get('/getExpenses', async(req, res)=>{
 })
 router.get('/getExpCategory', async(req, res)=>{
     try{
-        let userId = req.query.userId
+        let userId = req.userId
         let categories = await expenseCategoryModel.findOne({userId:userId}, {category:1, _id:0})
         return res.status(200).json({success:true, message:"Categories fetched successfully!", categories:categories.category})
     }catch(err){
@@ -42,7 +42,7 @@ router.get('/getExpCategory', async(req, res)=>{
 })
 router.post('/postExpCategory', async(req, res)=>{
     try{
-        let userId = req.body.userId
+        let userId = req.userId
         let category = req.body.category
         let categories = await expenseCategoryModel.findOne({userId:userId})
         if(!categories){

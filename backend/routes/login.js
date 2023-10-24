@@ -2,6 +2,7 @@ const router = require('express').Router();
 const {generateToken} = require('../auth/JWTAuth');
 const { userModel:user } = require('../models/user');
 const bcrypt = require('bcrypt');
+
 const invalidTokens = require('../auth/JWTAuth').invalidTokens;
 
 router.post('/login', async (req, res) => {
@@ -15,9 +16,8 @@ router.post('/login', async (req, res) => {
         if (!validPassword) {
             return res.status(400).json({ success: false, message: "Invalid password" })
         }
-        const token = generateToken({ email: userData.email, userId: userData.userId });
-        req.header['authorization'] = token;
-        return res.status(200).json({ success: true, message: "User logged in successfully!" })
+        const token = await generateToken({ email: userData.email, userId: userData.userId });
+        return res.status(200).json({ auth: true, message: "User logged in successfully!", token: token })
     } catch (err) {
         console.log(err)
         return res.status(400).json({ success: false, error: err.message })
@@ -37,8 +37,10 @@ router.post('/signup', async (req, res) => {
             password: hashedPassword
         });
         await newUser.save()
-        return res.status(200).json({ success: true, message:"user created successfully!"})
+        const token = await generateToken({ email: body.email, userId: body.userId });
+        return res.status(200).json({ auth: true, message:"user created successfully!", token: token})
     } catch (err) {
+        console.log(err)
         return res.status(400).json({ success: false, error: err.message })
     }
 })
